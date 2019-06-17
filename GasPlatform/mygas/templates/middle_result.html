@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+    .mainbody{
+        width: auto;
+        background-color: #FFF;
+        margin-top: 0px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        overflow:hidden;
+    }
+    .col-1 {
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+    #add{
+        margin-bottom: 10px;
+    }
+    .tijiao{
+        border: 1px solid #dddddd;
+    }
+    #allocation label{
+        font-size: 16px;
+    }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">结果查询</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div style="margin-left: 20px;margin-right: 20px">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>测试进度</strong>&nbsp;<small>Meter Result  >></small></h2>
+    </div>
+    <br>
+
+<div class="text-left">
+    <form class="form-horizontal" style="font-size: 16px" action="/middle_result/" method="POST" id="result">
+         {% csrf_token %}
+          <div class="cul-md-12">
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">表号：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterId }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">表类型：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterType }}
+                  </div>
+              </div>
+          </div>
+          {% if group  != "生产厂商" %}
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">生产厂商：</label>
+                  <div class="col-md-8">
+                  {{ q_form.ManufactureName_id }}
+                  </div>
+              </div>
+          </div>
+          {% endif %}
+          </div>
+          <div class="col-md-12">
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">提交日期：</label>
+                  <div id="datetimepicker_q54" class="col-md-8 input-group">
+                      <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                      {{ q_form.Subtime }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">审核日期：</label>
+                  <div id="datetimepicker_q55" class="col-md-8 input-group">
+                      <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                      {{ q_form.CheckTime }}
+                  </div>
+              </div>
+          </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="submit" style="margin-left: 120px" class="btn btn-default" value="查询"/>
+          </div>
+    </form>
+</div>
+
+{% if group != "生产厂商" %}
+{% if meter_list %}
+<table id="test" class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center" style="width: 4%">序号</th>
+            <th class="text-center" style="width: 7%">燃气表表号</th>
+            <th class="text-center" style="width: 8%">燃气表类型</th>
+            <th class="text-center" style="width: 7%">生产厂商</th>
+            <th class="text-center" style="width: 11%">最近一次测试时间</th>
+            <th class="text-center" style="width: 6%">初检服务器</th>
+            <th class="text-center" style="width: 6%">初检结果</th>
+            <th class="text-center" style="width: 7%">命令检测服务器</th>
+            <th class="text-center" style="width: 7%">命令检测结果</th>
+            <th class="text-center" style="width: 7%">IC卡检测服务器</th>
+            <th class="text-center" style="width: 7%">IC卡检测结果</th>
+            <th class="text-center" style="width: 6%">终检服务器</th>
+            <th class="text-center" style="width: 6%">终检结果</th>
+            <th class="text-center" style="width: 7%">总测试结果</th>
+        </tr>
+   </thead>
+   <tbody>
+   {% for meter in meter_list %}
+        <tr class="text-center biaoji" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td>{{ meter.Manu }}</td>
+            <td>{{ meter.MeterTime }}</td>
+            <td>{{ meter.Meterip_Chu }}</td>
+            <td data-target="#{{ meter.MeterId }}1" data-toggle="collapse">{{ meter.MeterChuState }}
+                <a class="caret"></a>
+            </td>
+            <td>{{ meter.Meterip_Com }}</td>
+            <td data-target="#{{ meter.MeterId }}2" data-toggle="collapse">{{ meter.MeterComState }}
+                <a class="caret"></a>
+            </td>
+            <td>{{ meter.Meterip_IC }}</td>
+            <td>{{ meter.MeterIcState }}</td>
+            <td>{{ meter.Meterip_Zhong }}</td>
+            <td data-target="#{{ meter.MeterId }}3" data-toggle="collapse">{{ meter.MeterZhongState }}
+                 <a class="caret"></a>
+            </td>
+            <td>
+                {% if meter.MeterCancel == "合格" or meter.MeterCancel == "不合格"%}
+                    {{ meter.MeterState }}（中止）
+                {% elif meter.MeterCancel == "否" %}
+                    {{ meter.MeterState }}
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+        <td colspan="11" style="padding:0; margin:0; border:0;">
+            <div style="width: 80%" class="collapse" id="{{ meter.MeterId }}1">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="active">
+                            <th style="color:blue;text-align: center">初检</th>
+                            <th style="text-align: center">常规数据上传</th>
+                            <th style="text-align: center">密钥修改</th>
+                            <th style="text-align: center">网络参数修改</th>
+                            <th style="text-align: center">程序远程升级</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr class="text-center">
+                                    <td></td>
+                                    <td>{{ meter.changgui }}</td>
+                                    <td>{{ meter.miyao }}</td>
+                                    <td>{{ meter.canshu }}</td>
+                                    <td>{{ meter.FTP }}</td>
+                                </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="11" style="padding:0; margin:0; border:0;">
+            <div style="width: 80%" class="collapse" id="{{ meter.MeterId }}2">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="active">
+                            <th style="color:blue;text-align: center">命令检测</th>
+                            <th style="text-align: center">常规命令</th>
+                            <th style="text-align: center">错误命令</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr class="text-center">
+                                    <td></td>
+                                    <td>{{ meter.chang }}</td>
+                                    <td>{{ meter.wrong }}</td>
+                                </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="11" style="padding:0; margin:0; border:0;">
+            <div style="width: 80%" class="collapse" id="{{ meter.MeterId }}3">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="active">
+                            <th style="color:blue;text-align: center">终检</th>
+                            <th style="text-align: center">模拟网络中断测试</th>
+                            <th style="text-align: center">数据合法性测试</th>
+                            <th style="text-align: center">常规数据上传时间测试</th>
+                            <th style="text-align: center">常规数据采集时间测试</th>
+                            <th style="text-align: center">常规数据采集周期测试</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr class="text-center">
+                                    <td></td>
+                                    <td>{{ meter.moni }}</td>
+                                    <td>{{ meter.hefa }}</td>
+                                    <td>{{ meter.shangchuan }}</td>
+                                    <td>{{ meter.caijitime }}</td>
+                                    <td>{{ meter.caijicircle }}</td>
+                                </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </td>
+        </tr>
+   {% endfor %}
+   </tbody>
+</table>
+{% else %}
+<div style="margin-top: 40px;margin-left: 50px"><h3>未查询到相关数据！</h3></div>
+{% endif %}
+{% else %}
+{% if meter_list %}
+<table id="test" class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">生产厂商</th>
+            <th class="text-center">测试结果</th>
+        </tr>
+   </thead>
+   <tbody>
+   {% for meter in meter_list %}
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td>{{ meter.Manu }}</td>
+            <td>
+                {% if meter.MeterCancel == "合格" or meter.MeterCancel == "不合格"%}
+                    {{ meter.MeterState }}（中止）
+                {% elif meter.MeterCancel == "否" %}
+                    {{ meter.MeterState }}
+                {% endif %}
+            </td>
+        </tr>
+   {% endfor %}
+   </tbody>
+</table>
+{% else %}
+<div style="margin-top: 40px;margin-left: 50px"><h3>未查询到相关数据！</h3></div>
+{% endif %}
+{% endif %}
+
+<div class="col-md-12 text-right">
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+      {{ page_info.pager|safe }}
+  </ul>
+</nav>
+</div>
+
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+
+$(document).ready(function(){
+     $('#datetimepicker_q54').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+      })
+	   });
+    $(document).ready(function(){
+     $('#datetimepicker_q55').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+      })
+	   });
+$.ajaxSetup({
+            data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+        });
+function sto(the,MeterId,) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"入库提示窗口",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认入库'+MeterId+'表</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/storage/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("入库成功");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }else{
+                        layer.msg("入库失败");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+function del(the,MeterId) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"确认删除提示窗口",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认删除'+MeterId+'表</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/del_test/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("删除成功");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }else{
+                        layer.msg("删除失败");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+
+$(document).ready(function() {
+    $("#test .biaoji td:contains('完成')").parent().css("background","#b2dba1");
+    $("#test .biaoji td:contains('不合格')").parent().css("background","#e4b9b9");
+    $("#test td:contains('失败')").parent().css("background","#f7ecb5");
+});
+
+</script>
+{% endblock %}

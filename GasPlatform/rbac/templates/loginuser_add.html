@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">用户管理</a></li>
+       <li class="active">添加用户</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div class="mainbody col-1">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>新增用户</strong>&nbsp;<small>User Add  >></small></h2>
+    </div>
+    <br>
+    <div class="row text-left vertical-middle-sm">
+        <form class="form-horizontal"  name="group_form" method="POST" action="/loginuser_add/">
+        {% csrf_token %}
+             <div class="col-md-12">
+                  <div class="form-group {% if form.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-4">用户名：</label>
+                      <div class="col-md-4">{{ form.username }}
+                          <span class="help-block">{{ form.errors.username.0 }}</span>
+                      </div>
+                  </div>
+             </div>
+             <div class="col-md-12">
+                  <div class="form-group {% if form.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-4">密码：</label>
+                      <div class="col-md-4">{{ form.password }}
+                          <span class="help-block">{{ form.errors.password.0 }}</span>
+                      </div>
+                  </div>
+             </div>
+             <div class="col-md-12">
+                  <div class="form-group {% if form.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-4">所属分组：</label>
+                      <div class="col-md-4">{{ form.group_id }}
+                          <span class="help-block">{{ form.errors.group_id.0 }}</span>
+                      </div>
+                      <div class="col-md-2" style="margin: 6px 0px 0px 6px;">
+                          <span style="color: gray">提示：别忘了勾选!</span>
+                      </div>
+                  </div>
+             </div>
+             </br>
+             <div class="col-md-8 text-right">
+                 <input type="submit" class="btn btn-info" value="提交">
+             </div>
+             <br>
+        </form>
+    </div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

@@ -1,0 +1,1042 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+    #title{
+       margin-bottom: 8px;
+       font-size: 22px;
+       font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+        {% if look1 or look2 %}
+            <li><a href="#">查看数据</a></li>
+        {% else %}
+            <li><a href="#">数据审核</a></li>
+        {% endif %}
+       <li class="active">IC卡-修正仪</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div class="mainbody col-1">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        {% if look1 or look2 %}
+            <h2 style="margin-left: 8px"><strong>查看IC卡-修正仪信息</strong>&nbsp;<small>Meter Information Inspect  >></small></h2>
+        {% else %}
+            <h2 style="margin-left: 8px"><strong>审核IC卡-修正仪信息</strong>&nbsp;<small>Meter Information Check  >></small></h2>
+        {% endif %}
+    </div>
+    <br>
+    <div class="row text-left vertical-middle-sm">
+        <form class="form-horizontal"  name="datainput_form" method="POST" action="/check_ic_xzy/?p1={{ meterid }}&p2={{ metertype }}">
+        {% csrf_token %}
+        <div class="panel-body">
+                 <div class="col-md-8 center">
+                 <div class="panel panel-default">
+                     <div class="panel-body">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-6">表号：</label>
+                                  <div class="col-md-6">{{ form0.MeterId }}{{ msg0.MeterId.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6" style="display: none">
+                                  <label class="control-label col-md-6">表类型：</label>
+                                  <div class="col-md-6">{{ form0.MeterType }}{{ msg0.MeterType.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-6">生产厂商：</label>
+                                  <div class="col-md-6">{{ form0.ManufactureName_id }}{{ msg0.ManufactureName_id.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                   <label class="control-label col-md-5">生产日期：</label>
+                                   <div id="datetimepickerA" class="col-md-6 input-group">
+                                        <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                                        {{ form0.TimeOfProduce }}{{ msg0.TimeOfProduce.0 }}
+                                   </div>
+                              </div>
+                         </div>
+                     </div>
+                 </div>
+                 </div>
+             </div>
+        <div id="btn-menu" class="center-header">
+            <ul>
+            <li id="ic-menu" class="active">--  IC卡数据  --</li>
+            <li id="msb-csb-xzy-menu">--  修正仪数据  --</li>
+            </ul>
+        </div>
+        <div class="btn-con" >
+        <div id="ic" class="panel panel-default">
+           <div class="panel-body">
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 计费数据 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-6">计费状态字：</label>
+                              <div class="col-md-6">{{ form1.ChargingStatusWord }}{{ msg1.ChargingStatusWord.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-7">
+                              <label class="control-label col-md-7">启用当前价格表读数：</label>
+                              <div class="col-md-5">{{ form1.CurrentPriceInitialVol }}{{ msg1.CurrentPriceInitialVol.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-6">当前表读数：</label>
+                              <div class="col-md-6">{{ form1.CurrentVol }}{{ msg1.CurrentVol.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-7">
+                              <label class="control-label col-md-7">前次单价：</label>
+                              <div class="col-md-5">{{ form1.LastPrice }}{{ msg1.LastPrice.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-6">剩余金额：</label>
+                              <div class="col-md-6">{{ form1.RemainingSum }}{{ msg1.RemainingSum.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-7">
+                              <label class="control-label col-md-7">启用前次价格表读数：</label>
+                              <div class="col-md-5">{{ form1.LastPriceInitialVol }}{{ msg1.LastPriceInitialVol.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-6">累用金额：</label>
+                              <div class="col-md-6">{{ form1.CumulativeSum }}{{ msg1.CumulativeSum.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-7">
+                              <label class="control-label col-md-7">计费时间：</label>
+                              <div class="col-md-5">{{ form1.ChargingTime }}{{ msg1.ChargingTime.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-6">当前单价：</label>
+                              <div class="col-md-6">{{ form1.CurrentPrice }}{{ msg1.CurrentPrice.0 }}</div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-5"> 设置延时价格体系 </label>
+                     </div>
+                     <div id="tab-menu">
+                         <ul>
+                            <li id="menu0" class="active">通用字段</li>
+                            <li id="menu1">第一阶段</li>
+                            <li id="menu2">第二阶段</li>
+                            <li id="menu3">第三阶段</li>
+                            <li id="menu4">第四阶段</li>
+                            <li id="menu5">第五阶段</li>
+                         </ul>
+                     </div>
+                     <div id="tab-con">
+                         <div id="menu0-con">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">版本号对比标志：</label>
+                                  <div class="col-md-5">{{ form1.VerComparison }}{{ msg1.VerComparison.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">常规燃气价格：</label>
+                                  <div class="col-md-5">{{ form1.PriceNormal }}{{ msg1.PriceNormal.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格体系启用时间：</label>
+                                  <div class="col-md-5">{{ form1.PriceSysDate }}{{ msg1.PriceSysDate.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格体系循环周期：</label>
+                                  <div class="col-md-5">{{ form1.PriceSysCycle }}{{ msg1.PriceSysCycle.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格模式：</label>
+                                  <div class="col-md-5">{{ form1.PriceMode }}{{ msg1.PriceMode.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格周期启用时间：</label>
+                                  <div class="col-md-5">{{ form1.PriceCycleDate }}{{ msg1.PriceCycleDate.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格体系版本号：</label>
+                                  <div class="col-md-5">{{ form1.PriceSysVer }}{{ msg1.PriceSysVer.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">清价格周期标志：</label>
+                                  <div class="col-md-5">{{ form1.PriceClearSign }}{{ msg1.PriceClearSign.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu1-con">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateOne }}{{ msg1.PriceEndDateOne.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOne2 }}{{ msg1.PriceOne2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOne1 }}{{ msg1.PriceOne1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceOneAmount2 }}{{ msg1.PriceOneAmount2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOneAmount1 }}{{ msg1.PriceOneAmount1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOne3 }}{{ msg1.PriceOne3.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu2-con">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateTwo }}{{ msg1.PriceEndDateTwo.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwo2 }}{{ msg1.PriceTwo2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwo1 }}{{ msg1.PriceTwo1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwoAmount2 }}{{ msg1.PriceTwoAmount2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwoAmount1 }}{{ msg1.PriceTwoAmount1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwo3 }}{{ msg1.PriceTwo3.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu3-con">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateThree }}{{ msg1.PriceEndDateThree.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThree2 }}{{ msg1.PriceThree2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThree1 }}{{ msg1.PriceThree1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceThreeAmount2 }}{{ msg1.PriceThreeAmount2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThreeAmount1 }}{{ msg1.PriceThreeAmount1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThree3 }}{{ msg1.PriceThree3.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu4-con">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateFour }}{{ msg1.PriceEndDateFour.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFour2 }}{{ msg1.PriceFour2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFour1 }}{{ msg1.PriceFour1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceFourAmount2 }}{{ msg1.PriceFourAmount2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFourAmount1 }}{{ msg1.PriceFourAmount1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFour3 }}{{ msg1.PriceFour3.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu5-con">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateFive }}{{ msg1.PriceEndDateFive.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFive2 }}{{ msg1.PriceFive2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFive1 }}{{ msg1.PriceFive1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceFiveAmount2 }}{{ msg1.PriceFiveAmount2.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFiveAmount1 }}{{ msg1.PriceFiveAmount1.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFive3 }}{{ msg1.PriceFive3.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 当前价格体系 </label>
+                     </div>
+                     <div id="tab-menu-c">
+                         <ul>
+                            <li id="menu0-c" class="active">通用字段</li>
+                            <li id="menu1-c">第一阶段</li>
+                            <li id="menu2-c">第二阶段</li>
+                            <li id="menu3-c">第三阶段</li>
+                            <li id="menu4-c">第四阶段</li>
+                            <li id="menu5-c">第五阶段</li>
+                         </ul>
+                     </div>
+                     <div id="tab-con-c">
+                         <div id="menu0-con-c">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格体系启用时间：</label>
+                                  <div class="col-md-5">{{ form1.PriceSysDate_C }}{{ msg1.PriceSysDate_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格体系循环周期：</label>
+                                  <div class="col-md-5">{{ form1.PriceSysCycle_C }}{{ msg1.PriceSysCycle_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格模式：</label>
+                                  <div class="col-md-5">{{ form1.PriceMode_C }}{{ msg1.PriceMode_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格周期启用时间：</label>
+                                  <div class="col-md-5">{{ form1.PriceCycleDate_C }}{{ msg1.PriceCycleDate_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">价格体系版本号：</label>
+                                  <div class="col-md-5">{{ form1.PriceSysVer_C }}{{ msg1.PriceSysVer_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">清价格周期标志：</label>
+                                  <div class="col-md-5">{{ form1.PriceClearSign_C }}{{ msg1.PriceClearSign_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">常规燃气价格：</label>
+                                  <div class="col-md-5">{{ form1.PriceNormal_C }}{{ msg1.PriceNormal_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">延时价格体系是否存在：</label>
+                                  <div class="col-md-5">{{ form1.DelayExists_C }}{{ msg1.DelayExists_C.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu1-con-c">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateOne_C }}{{ msg1.PriceEndDateOne_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOne2_C }}{{ msg1.PriceOne2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOne1_C }}{{ msg1.PriceOne1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceOneAmount2_C }}{{ msg1.PriceOneAmount2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOneAmount1_C }}{{ msg1.PriceOneAmount1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceOne3_C }}{{ msg1.PriceOne3_C.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu2-con-c">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateTwo_C }}{{ msg1.PriceEndDateTwo_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwo2_C }}{{ msg1.PriceTwo2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwo1_C }}{{ msg1.PriceTwo1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwoAmount2_C }}{{ msg1.PriceTwoAmount2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwoAmount1_C }}{{ msg1.PriceTwoAmount1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceTwo3_C }}{{ msg1.PriceTwo3_C.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu3-con-c">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateThree_C }}{{ msg1.PriceEndDateThree_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThree2_C }}{{ msg1.PriceThree2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThree1_C }}{{ msg1.PriceThree1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceThreeAmount2_C }}{{ msg1.PriceThreeAmount2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThreeAmount1_C }}{{ msg1.PriceThreeAmount1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceThree3_C }}{{ msg1.PriceThree3_C.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu4-con-c">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateFour_C }}{{ msg1.PriceEndDateFour_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFour2_C }}{{ msg1.PriceFour2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFour1_C }}{{ msg1.PriceFour1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceFourAmount2_C }}{{ msg1.PriceFourAmount2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFourAmount1_C }}{{ msg1.PriceFourAmount1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFour3_C }}{{ msg1.PriceFour3_C.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                         <div id="menu5-con-c">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">单价计费终止日期：</label>
+                                  <div class="col-md-5">{{ form1.PriceEndDateFive_C }}{{ msg1.PriceEndDateFive_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFive2_C }}{{ msg1.PriceFive2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFive1_C }}{{ msg1.PriceFive1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限2气量：</label>
+                                  <div class="col-md-5">{{ form1.PriceFiveAmount2_C }}{{ msg1.PriceFiveAmount2_C.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限1单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFiveAmount1_C }}{{ msg1.PriceFiveAmount1_C.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-7">上限3单价：</label>
+                                  <div class="col-md-5">{{ form1.PriceFive3_C }}{{ msg1.PriceFive3_C.0 }}</div>
+                              </div>
+                         </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 卡片充值记录 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-4" style="padding-left: 0">
+                              <label class="control-label col-md-7">充值日期1：</label>
+                              <div class="col-md-5">{{ form1.RechargeDate1}}{{ msg1.RechargeDate1.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-7">充值前剩余金额1：</label>
+                              <div class="col-md-5">{{ form1.RemainingSumBefore1 }}{{ msg1.RemainingSumBefore1.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-3" style="padding-right: 0">
+                              <label class="control-label col-md-7">充入金额1：</label>
+                              <div class="col-md-5">{{ form1.RechargeSum1 }}{{ msg1.RechargeSum1.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-4" style="padding-left: 0">
+                              <label class="control-label col-md-7">充值日期2：</label>
+                              <div class="col-md-5">{{ form1.RechargeDate2}}{{ msg1.RechargeDate2.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-7">充值前剩余金额2：</label>
+                              <div class="col-md-5">{{ form1.RemainingSumBefore2 }}{{ msg1.RemainingSumBefore2.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-3" style="padding-right: 0">
+                              <label class="control-label col-md-7">充入金额2：</label>
+                              <div class="col-md-5">{{ form1.RechargeSum2 }}{{ msg1.RechargeSum2.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-4" style="padding-left: 0">
+                              <label class="control-label col-md-7">充值日期3：</label>
+                              <div class="col-md-5">{{ form1.RechargeDate3}}{{ msg1.RechargeDate3.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-7">充值前剩余金额3：</label>
+                              <div class="col-md-5">{{ form1.RemainingSumBefore3 }}{{ msg1.RemainingSumBefore3.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-3" style="padding-right: 0">
+                              <label class="control-label col-md-7">充入金额3：</label>
+                              <div class="col-md-5">{{ form1.RechargeSum3 }}{{ msg1.RechargeSum3.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-4" style="padding-left: 0">
+                              <label class="control-label col-md-7">充值日期4：</label>
+                              <div class="col-md-5">{{ form1.RechargeDate4}}{{ msg1.RechargeDate4.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-7">充值前剩余金额1：</label>
+                              <div class="col-md-5">{{ form1.RemainingSumBefore4 }}{{ msg1.RemainingSumBefore4.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-3" style="padding-right: 0">
+                              <label class="control-label col-md-7">充入金额4：</label>
+                              <div class="col-md-5">{{ form1.RechargeSum4 }}{{ msg1.RechargeSum4.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-4" style="padding-left: 0">
+                              <label class="control-label col-md-7">充值日期5：</label>
+                              <div class="col-md-5">{{ form1.RechargeDate5}}{{ msg1.RechargeDate5.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-5">
+                              <label class="control-label col-md-7">充值前剩余金额5：</label>
+                              <div class="col-md-5">{{ form1.RemainingSumBefore5 }}{{ msg1.RemainingSumBefore5.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-3" style="padding-right: 0">
+                              <label class="control-label col-md-7">充入金额5：</label>
+                              <div class="col-md-5">{{ form1.RechargeSum5 }}{{ msg1.RechargeSum5.0 }}</div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+           </div>
+        </div>
+
+        <div id="msb-csb-xzy" class="panel panel-default">
+            <div class="form-group col-md-6 center">
+                 <label class="control-label col-md-2"> 表号：</label>
+                 <div class="col-md-4"> {{ meterid }} </div>
+             </div>
+            <div class="panel-body">
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 主上行数据 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">通讯号码：</label>
+                              <div class="col-md-6">{{ form2.Com_no_xzy }}{{ msg2.Com_no_xzy.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">表数量：</label>
+                              <div class="col-md-6">{{ form2.MeterNum }}{{ msg2.MeterNum.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">版本号：</label>
+                              <div class="col-md-6">{{ form2.Sw_rlse_xzy }}{{ msg2.Sw_rlse_xzy.0 }}</div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 子上行数据 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">温度：</label>
+                              <div class="col-md-6">{{ form2.Temperature_xzy}}{{ msg2.Temperature_xzy.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">受扰累计体积：</label>
+                              <div class="col-md-6">{{ form2.Disturb_Total_Vol }}{{ msg2.Disturb_Total_Vol.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">压力：</label>
+                              <div class="col-md-6">{{ form2.Pressure }}{{ msg2.Pressure.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">校正系数：</label>
+                              <div class="col-md-6">{{ form2.Correction_E }}{{ msg2.Correction_E.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">标况累计体积：</label>
+                              <div class="col-md-6">{{ form2.Stan_Total_Vol }}{{ msg2.Stan_Total_Vol.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">标况瞬时流量：</label>
+                              <div class="col-md-6">{{ form2.Stan_Ins_Ele_xzy }}{{ msg2.Stan_Ins_Ele_xzy.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">工况累计体积：</label>
+                              <div class="col-md-6">{{ form2.Work_Total_Vol }}{{ msg2.Work_Total_Vol.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">工况瞬时流量：</label>
+                              <div class="col-md-6">{{ form2.Work_Ins_Ele_xzy }}{{ msg2.Work_Ins_Ele_xzy.0 }}</div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 读取事件记录 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">拆表：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.DropMeter2_xzy }}{{ msg2.DropMeter2_xzy.0 }}</div>
+                              <div id="datetimepicker0" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.DropMeter1_xzy }}{{ msg2.DropMeter1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">反向安装：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ReverseInstall2_xzy }}{{ msg2.ReverseInstall2_xzy.0 }}</div>
+                              <div id="datetimepicker1" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ReverseInstall1_xzy }}{{ msg2.ReverseInstall1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">计量模块故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.MeasureBreakdown2_xzy }}{{ msg2.MeasureBreakdown2_xzy.0 }}</div>
+                              <div id="datetimepicker2" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.MeasureBreakdown1_xzy }}{{ msg2.MeasureBreakdown1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">温度传感器故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.TSensorBreakdown2_xzy }}{{ msg2.TSensorBreakdown2_xzy.0 }}</div>
+                              <div id="datetimepicker3" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.TSensorBreakdown1_xzy }}{{ msg2.TSensorBreakdown1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">压力传感器故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.PSensorBreakdown2_xzy }}{{ msg2.PSensorBreakdown2_xzy.0 }}</div>
+                              <div id="datetimepicker4" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.PSensorBreakdown1_xzy }}{{ msg2.PSensorBreakdown1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">流量异常：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.TrafficAbnormality2_xzy }}{{ msg2.TrafficAbnormality2_xzy.0 }}</div>
+                              <div id="datetimepicker5" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.TrafficAbnormality1_xzy }}{{ msg2.TrafficAbnormality1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">通信电压低：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ComVol2_xzy }}{{ msg2.ComVol2_xzy.0 }}</div>
+                              <div id="datetimepicker6" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ComVol1_xzy }}{{ msg2.ComVol1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">计量电压低：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.BaseVol2_xzy }}{{ msg2.BaseVol2_xzy.0 }}</div>
+                              <div id="datetimepicker7" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.BaseVol1_xzy }}{{ msg2.BaseVol1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">采集故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.CollectFault2_xzy }}{{ msg2.CollectFault2_xzy.0 }}</div>
+                              <div id="datetimepicker8" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.CollectFault1_xzy }}{{ msg2.CollectFault1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">燃气泄漏关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.GasLeakClose2_xzy }}{{ msg2.GasLeakClose2_xzy.0 }}</div>
+                              <div id="datetimepicker9" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.GasLeakClose1_xzy }}{{ msg2.GasLeakClose1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">窃气关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.GasStolenClose2_xzy }}{{ msg2.GasStolenClose2_xzy.0 }}</div>
+                              <div id="datetimepicker10" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.GasStolenClose1_xzy }}{{ msg2.GasStolenClose1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">复位关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ResetClose2_xzy }}{{ msg2.ResetClose2_xzy.0 }}</div>
+                              <div id="datetimepicker11" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ResetClose1_xzy }}{{ msg2.ResetClose1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">计量低电压关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.LowVolClose2_xzy }}{{ msg2.LowVolClose2_xzy.0 }}</div>
+                              <div id="datetimepicker12" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.LowVolClose1_xzy }}{{ msg2.LowVolClose1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">超声波计量故障关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.CollectClose2_xzy }}{{ msg2.CollectClose2_xzy.0 }}</div>
+                              <div id="datetimepicker13" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.CollectClose1_xzy }}{{ msg2.CollectClose1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">关阀指令关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.CommandClose2_xzy }}{{ msg2.CommandClose2_xzy.0 }}</div>
+                              <div id="datetimepicker14" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.CommandClose1_xzy }}{{ msg2.CommandClose1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">人工开阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ManulOpen2_xzy }}{{ msg2.ManulOpen2_xzy.0 }}</div>
+                              <div id="datetimepicker15" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ManulOpen1_xzy }}{{ msg2.ManulOpen1_xzy.0 }}
+                              </div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+            </div>
+            <div class="col-md-8 center">
+                   <div class="panel panel-default">
+                       <div class="panel-body">
+                           <div id="title" class="col-md-12 text-left">
+                                <label class="control-label col-md-4"> FTP远程升级数据 </label>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">FTP用户名：</label>
+                               <div class="col-md-6">{{ form2.FTPUserName_xzy }}{{ msg2.FTPUserName_xzy.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">FTP密码：</label>
+                               <div class="col-md-6">{{ form2.FTPPassword_xzy }}{{ msg2.FTPPassword_xzy.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">FTP地址：</label>
+                               <div class="col-md-6">{{ form2.FTPAddress_xzy }}{{ msg2.FTPAddress_xzy.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">目录：</label>
+                               <div class="col-md-6">{{ form2.FTPCatalog_xzy }}{{ msg2.FTPCatalog_xzy.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10">
+                               <label class="control-label col-md-6">安装包文件名：</label>
+                               <div class="col-md-6">{{ form2.FileName_xzy }}{{ msg2.FileName_xzy.0 }}</div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+        </div>
+        </div>
+
+        </br>
+            {% if look1 %}
+            <div class="col-md-10 text-right">
+            <a id="exit" class="btn btn-danger" href="/dataresult/">退出</a>
+            </div>
+            {% elif look2 %}
+            <div class="col-md-10 text-right">
+            <a id="exit" class="btn btn-danger" href="/checkresult/">退出</a>
+            </div>
+            {% else %}
+            <div class="col-md-10 text-right">
+            <a name='check1' class="check1 btn btn-default" href="javascript:" onclick="check1(this,'{{ meterid }}')">通过</a>
+            <a name='check2' class="check2 btn btn-default" href="javascript:" onclick="check2(this,'{{ meterid }}')">不通过</a>
+            </div>
+            {% endif %}
+        <br>
+        </form>
+    </div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+ $.ajaxSetup({
+            data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+        });
+function check1(the,MeterId,) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"审核结果",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认提交'+MeterId+'表审核结果：通过</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/check/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                    "result":1,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("审核成功");
+                        parent.layer.close(e);
+                         {#刷新上一个页面#}
+                        setTimeout("location.replace(document.referrer)","1000");
+                    }else{
+                        layer.msg("审核失败");
+                        parent.layer.close(e);
+                        setTimeout("location.replace(document.referrer)","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+function check2(the,MeterId,) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"审核结果",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认提交'+MeterId+'表审核结果：不通过</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/check/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                    "result":0,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("审核成功");
+                        parent.layer.close(e);
+                        setTimeout("location.replace(document.referrer)","1000");
+                    }else{
+                        layer.msg("审核失败");
+                        parent.layer.close(e);
+                        setTimeout("location.replace(document.referrer)","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+    </script>
+{% endblock %}

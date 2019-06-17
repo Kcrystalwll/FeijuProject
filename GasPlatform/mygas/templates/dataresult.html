@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+    #add{
+        margin-bottom: 10px;
+    }
+    .tijiao{
+        border: 1px solid #dddddd;
+    }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">数据录入</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div style="margin-right: 20px;margin-left: 20px">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>审核情况</strong>&nbsp;<small>Meter Check Result  >></small></h2>
+    </div>
+    <br>
+
+<div class="text-left">
+    <form class="form-horizontal" style="font-size: 16px" action="/dataresult/" method="POST" id="dataresult">
+         {% csrf_token %}
+          <div class="col-md-12">
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-3">表号：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterId }}
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="col-md-12">
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-3">表类型：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterType }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-3">表状态：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterState }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">编辑日期：</label>
+                  <div id="datetimepicker_q2" class="col-md-6 input-group">
+                      <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                      {{ q_form.Subtime }}
+                  </div>
+              </div>
+          </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="submit" class="btn btn-default" value="查询"/>
+          </div>
+    </form>
+</div>
+
+{% if meter_list%}
+<table id="test" class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">生产厂商</th>
+            <th class="text-center">上次审核时间</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+  </thead>
+  <tbody>
+  {% for meter in meter_list %}
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td>{{ meter.ManufactureName.ManufactureName }}</td>
+            <td>{{ meter.CheckTime }}</td>
+            <td style="font-weight: bolder">
+                {% if meter.IsDataChecked == 0%}
+                待审核
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 1 and meter.IsTest == 0%}
+                通过 请打开该燃气表！
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 0 and meter.IsTest == 0%}
+                不通过
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 1 and meter.IsTest == 1%}
+                本次测试完成！
+                {% endif %}
+            </td>
+            <td>
+                {% if meter.IsDataChecked == 0%}
+                <span class="glyphicon glyphicon-pencil" href="/edit_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}"></span>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-trash" href="/del_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}"></span>
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 1 %}
+                <a href="/check_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}&p1=look">查看</a>
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 0 %}
+                <a class="glyphicon glyphicon-pencil" href="/edit_data/?MeterId={{ meter.id }}&MeterType={{ meter.MeterType }}"></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="glyphicon glyphicon-trash" href="/del_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}"></a>
+                {% endif %}
+            </td>
+        </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% elif meter %}
+<table id="test" class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">生产厂商</th>
+            <th class="text-center">上次审核时间</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+  </thead>
+  <tbody>
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td>{{ meter.ManufactureName.ManufactureName }}</td>
+            <td>{{ meter.CheckTime }}</td>
+            <td style="font-weight: bolder">
+                {% if meter.IsDataChecked == 0%}
+                待审核
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 1 and meter.IsTest == 0%}
+                通过 请打开该燃气表！
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 0 and meter.IsTest == 0%}
+                不通过
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 1 and meter.IsTest == 1%}
+                本次测试完成！
+                {% endif %}
+            </td>
+            <td>
+                {% if meter.IsDataChecked == 0%}
+                <span class="glyphicon glyphicon-pencil" href="/edit_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}"></span>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-trash" href="/del_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}"></span>
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 1 %}
+                <a href="/check_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}&p1=look">查看</a>
+                {% elif meter.IsDataChecked == 1 and meter.DataCheckedResult == 0 %}
+                <a class="glyphicon glyphicon-pencil" href="/edit_data/?MeterId={{ meter.id }}&MeterType={{ meter.MeterType }}"></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="glyphicon glyphicon-trash" href="/del_data/?MeterId={{ meter.MeterId }}&MeterType={{ meter.MeterType }}"></a>
+                {% endif %}
+            </td>
+        </tr>
+  </tbody>
+</table>
+{% else %}
+  <div style="margin-top: 40px;margin-left: 50px"><h3>未查询到相关数据！</h3></div>
+{% endif %}
+
+<div class="col-md-12 text-right">
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+      {{ page_info.pager|safe }}
+  </ul>
+</nav>
+</div>
+
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+     $('#datetimepicker_q2').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+      })
+	   });
+$(document).ready(function() {
+    $("#test td:contains('通过')").parent().css("background","#b2dba1");
+    $("#test td:contains('不通过')").parent().css("background","#e4b9b9");
+});
+</script>
+{% endblock %}

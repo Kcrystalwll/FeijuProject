@@ -1,0 +1,113 @@
+.content ol span{
+    margin-right: 5px;
+}
+
+.mainbody{
+    width: auto;
+    background-color: #FFF;
+    margin-top: 0px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    overflow:hidden;
+}
+.col-1 {
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+/*所有panel居中*/
+.center{
+        left:200px;
+    }
+
+.center-header{
+    margin-left: 200px;
+    margin-bottom: 10px;
+}
+
+/*表单所有label框和*/
+.form-group label{
+    padding-left: 0;
+    padding-right: 0;
+}
+.form-group div{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/*切换按钮*/
+#btn-menu ul{
+         padding: 0;
+         margin: 0;
+}
+#btn-menu ul li{
+ display: inline-block;
+ width: 200px;
+ height: 40px;
+ line-height: 40px;
+ text-align: center;
+ cursor: pointer;
+}
+#btn-menu ul li.active{
+ background: #749dcf;
+}
+
+#ic{
+    display: block;
+}
+#msb-csb-xzy{
+    display: none;
+}
+
+/*IC切换*/
+#tab-menu ul{
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+#tab-menu ul li{
+ display: inline-block;
+ width: 100px;
+ height: 40px;
+ line-height: 40px;
+ text-align: center;
+ cursor: pointer;
+}
+#tab-menu ul li.active{
+ background: #749dcf;
+}
+#menu0-con{
+    display: block;
+}
+#menu1-con,#menu2-con,#menu3-con,#menu4-con,#menu5-con{
+    display: none;
+}
+
+#tab-menu-c ul{
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+#tab-menu-c ul li{
+ display: inline-block;
+ width: 100px;
+ height: 40px;
+ line-height: 40px;
+ text-align: center;
+ cursor: pointer;
+}
+#tab-menu-c ul li.active{
+ background: #749dcf;
+}
+#menu0-con-c{
+    display: block;
+}
+#menu1-con-c,#menu2-con-c,#menu3-con-c,#menu4-con-c,#menu5-con-c{
+    display: none;
+}

@@ -1,0 +1,159 @@
+body{
+    margin: 0;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.active{
+    border-left: 2px solid #dddddd;
+}
+.margin-right-10{
+	margin-right:10px;
+}
+.hide{
+    display: none;
+}
+.pg-header{
+    height: 48px;
+    min-width: 1170px;
+    background-color: #3c8dbc;
+    line-height: 48px;
+}
+.pg-header .logo{
+    margin-left: 5px;
+    color: white;
+    font-size: 22px;
+    font-weight: bolder;
+    width: 280px;
+    text-align: center;
+    /*border-right: 1px solid #dddddd;*/
+}
+.pg-header .user{
+    padding: 0 20px;
+    color: white;
+}
+.pg-header .user:hover{
+    background-color: #269abc;
+}
+/*鼠标放在上面下面显示出来*/
+.pg-header .user:hover .userinfo{
+    display: block;
+}
+.pg-header .user .userinfo{
+    display: none;
+    position: absolute;
+    height: auto;
+    width: 120px;
+    top:48px;
+    right:2px;
+    z-index: 100;
+    padding-left: 1px;
+    background-color: white;
+    border: 1px solid #dddddd;
+}
+.pg-header .user .userinfo a{
+    /*占整行*/
+    display: block;
+    padding: 5px;
+    text-align: center;    /*居中*/
+    font-size:16px ;
+}
+.pg-header .rmenus a{
+    display: inline-block;
+    padding: 0 15px;
+    color: white;
+}
+.pg-header .rmenus a:hover{
+    background-color: #204d74;
+    color: white;
+}
+.menus{
+    width: 180px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 48px;
+    border-right: 1px solid #dddddd;
+    background-color: #0F3250;
+    z-index: 99;
+    opacity: 0.9%;
+}
+.menus a{
+    display: block;
+    padding: 10px 5px;
+    font-size: 18px;
+    border-bottom: 1px solid white;
+}
+.menus .facility:hover .facilityinfo{
+    display: block;
+}
+.menus .facility .facilityinfo{
+    display: none;
+    position: absolute;
+    width: 200px;
+    right:0;
+    z-index: 100;
+    background-color: #204d74;
+}
+.menus .facility .facilityinfo a{
+    color: white;
+}
+.title-menu,.body-menu{
+    font-size: 18px;
+}
+/*两者是父子关系*/
+.title-menu:hover .body-menu{
+    display: block;
+}
+.body-menu{
+    display: none;
+}
+.body-menu a:hover{
+    color: #0F3250;
+}
+.body-menu ul{
+    margin-bottom: 0px;
+}
+.menus ul li a span{
+    margin-right: 10px;
+    margin-left: 4px;
+}
+.side-header{
+	display: inline-block;
+	line-height: normal;
+	color: #000;
+	margin-top: 43px;
+	margin-right: 30px;
+	margin-bottom: 33px;
+	margin-left: 23px;
+}
+.side-header img{
+    width: 140px;
+}
+.side-header span{
+	font-size: 16px;
+	font-style: italic;
+	color: #fff;
+	margin-top:10px;
+	text-align: center;
+	display: block;
+}
+.body-menu ul{
+    padding-left: 0px;
+}
+.content{
+    position: absolute;
+    left: 180px;
+    right: 0;
+    top: 48px;
+    bottom: 0;
+    overflow: scroll;
+    z-index: 99;
+}
+.breadcrumb{
+    font-weight: bolder;
+}
+

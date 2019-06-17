@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+    #title{
+       margin-bottom: 8px;
+       font-size: 22px;
+       font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">数据录入</a></li>
+       <li class="active">膜式表</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div class="mainbody col-1">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>编辑膜式表信息</strong>&nbsp;<small>Meter Information Edit  >></small></h2>
+    </div>
+    <br>
+    <div class="row text-left vertical-middle-sm">
+        <form class="form-horizontal"  name="datainput_form" method="POST" action="/edit_msb/?p1={{ id }}&p2={{ metertype }}">
+        {% csrf_token %}
+        <div class="panel-body">
+                 <div class="col-md-8 center">
+                 <div class="panel panel-default">
+                     <div class="panel-body">
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-6">表号：</label>
+                                  <div class="col-md-6">{{ form0.MeterId }}{{ msg0.MeterId.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6" style="display: none">
+                                  <label class="control-label col-md-6">表类型：</label>
+                                  <div class="col-md-6">{{ form0.MeterType }}{{ msg0.MeterType.0 }}</div>
+                              </div>
+                         </div>
+                         <div class="col-md-12">
+                              <div class="form-group col-md-6">
+                                  <label class="control-label col-md-6">生产厂商：</label>
+                                  <div class="col-md-6">{{ form0.ManufactureName_id }}{{ msg0.ManufactureName_id.0 }}</div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                   <label class="control-label col-md-5">生产日期：</label>
+                                   <div id="datetimepickerA" class="col-md-6 input-group">
+                                        <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                                        {{ form0.TimeOfProduce }}{{ msg0.TimeOfProduce.0 }}
+                                   </div>
+                              </div>
+                         </div>
+                     </div>
+                 </div>
+                 </div>
+             </div>
+        <div id="btn-menu" class="center-header">
+            <ul>
+            <li><h4>--  膜式表数据  --</h4></li>
+            </ul>
+        </div>
+        <div class="btn-con" >
+        <div class="panel panel-default">
+           <div class="panel-body">
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 主上行数据 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">通讯号码：</label>
+                              <div class="col-md-6">{{ form2.Com_no_msb }}{{ msg2.Com_no_msb.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">版本号：</label>
+                              <div class="col-md-6">{{ form2.Sw_rlse_msb }}{{ msg2.Sw_rlse_msb.0 }}</div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 子上行数据 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">工况体积：</label>
+                              <div class="col-md-6">{{ form2.Real_vol }}{{ msg2.Real_vol.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">仪表电压：</label>
+                              <div class="col-md-6">{{ form2.Meter_v }}{{ msg2.Meter_v.0 }}</div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">温度值：</label>
+                              <div class="col-md-6">{{ form2.Temperature_msb }}{{ msg2.Temperature_msb.0 }}</div>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label class="control-label col-md-6">状态：</label>
+                              <div class="col-md-6">{{ form2.Status }}{{ msg2.Status.0 }}</div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+             <div class="col-md-8 center">
+             <div class="panel panel-default">
+                 <div class="panel-body">
+                     <div id="title" class="col-md-12 text-left">
+                          <label class="control-label col-md-4"> 读取事件记录 </label>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">拆表：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.DropMeter2_msb }}{{ msg2.DropMeter2_msb.0 }}</div>
+                              <div id="datetimepicker0" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.DropMeter1_msb }}{{ msg2.DropMeter1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">反向安装：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ReverseInstall2_msb }}{{ msg2.ReverseInstall2_msb.0 }}</div>
+                              <div id="datetimepicker1" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ReverseInstall1_msb }}{{ msg2.ReverseInstall1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">计量模块故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.MeasureBreakdown2_msb }}{{ msg2.MeasureBreakdown2_msb.0 }}</div>
+                              <div id="datetimepicker2" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.MeasureBreakdown1_msb }}{{ msg2.MeasureBreakdown1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">温度传感器故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.TSensorBreakdown2_msb }}{{ msg2.TSensorBreakdown2_msb.0 }}</div>
+                              <div id="datetimepicker3" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.TSensorBreakdown1_msb }}{{ msg2.TSensorBreakdown1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">压力传感器故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.PSensorBreakdown2_msb }}{{ msg2.PSensorBreakdown2_msb.0 }}</div>
+                              <div id="datetimepicker4" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.PSensorBreakdown1_msb }}{{ msg2.PSensorBreakdown1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">流量异常：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.TrafficAbnormality2_msb }}{{ msg2.TrafficAbnormality2_msb.0 }}</div>
+                              <div id="datetimepicker5" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.TrafficAbnormality1_msb }}{{ msg2.TrafficAbnormality1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">通信电压低：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ComVol2_msb }}{{ msg2.ComVol2_msb.0 }}</div>
+                              <div id="datetimepicker6" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ComVol1_msb }}{{ msg2.ComVol1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">计量电压低：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.BaseVol2_msb }}{{ msg2.BaseVol2_msb.0 }}</div>
+                              <div id="datetimepicker7" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.BaseVol1_msb }}{{ msg2.BaseVol1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">采集故障：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.CollectFault2_msb }}{{ msg2.CollectFault2_msb.0 }}</div>
+                              <div id="datetimepicker8" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.CollectFault1_msb }}{{ msg2.CollectFault1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">燃气泄漏关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.GasLeakClose2_msb }}{{ msg2.GasLeakClose2_msb.0 }}</div>
+                              <div id="datetimepicker9" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.GasLeakClose1_msb }}{{ msg2.GasLeakClose1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">窃气关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.GasStolenClose2_msb }}{{ msg2.GasStolenClose2_msb.0 }}</div>
+                              <div id="datetimepicker10" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.GasStolenClose1_msb }}{{ msg2.GasStolenClose1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">复位关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ResetClose2_msb }}{{ msg2.ResetClose2_msb.0 }}</div>
+                              <div id="datetimepicker11" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ResetClose1_msb }}{{ msg2.ResetClose1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">计量低电压关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.LowVolClose2_msb }}{{ msg2.LowVolClose2_msb.0 }}</div>
+                              <div id="datetimepicker12" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.LowVolClose1_msb }}{{ msg2.LowVolClose1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">超声波计量故障关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.CollectClose2_msb }}{{ msg2.CollectClose2_msb.0 }}</div>
+                              <div id="datetimepicker13" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.CollectClose1_msb }}{{ msg2.CollectClose1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">关阀指令关阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.CommandClose2_msb }}{{ msg2.CommandClose2_msb.0 }}</div>
+                              <div id="datetimepicker14" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.CommandClose1_msb }}{{ msg2.CommandClose1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="control-label col-md-3">人工开阀：</label>
+                              <div class="col-md-3" style="padding-right: 10px">{{ form2.ManulOpen2_msb }}{{ msg2.ManulOpen2_msb.0 }}</div>
+                              <div id="datetimepicker15" class="col-md-4 input-group">
+                              <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                               {{ form2.ManulOpen1_msb }}{{ msg2.ManulOpen1_msb.0 }}
+                              </div>
+                          </div>
+                     </div>
+                 </div>
+             </div>
+             </div>
+           </div>
+           <div class="panel-body">
+               <div class="col-md-8 center">
+                   <div class="panel panel-default">
+                       <div class="panel-body">
+                           <div id="title" class="col-md-12 text-left">
+                                <label class="control-label col-md-4"> FTP远程升级数据 </label>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">FTP用户名：</label>
+                               <div class="col-md-6">{{ form2.FTPUserName_msb }}{{ msg2.FTPUserName_msb.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">FTP密码：</label>
+                               <div class="col-md-6">{{ form2.FTPPassword_msb }}{{ msg2.FTPPassword_msb.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">FTP地址：</label>
+                               <div class="col-md-6">{{ form2.FTPAddress_msb }}{{ msg2.FTPAddress_msb.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10" style="display: none">
+                               <label class="control-label col-md-6">目录：</label>
+                               <div class="col-md-6">{{ form2.FTPCatalog_msb }}{{ msg2.FTPCatalog_msb.0 }}</div>
+                           </div>
+                           <div class="form-group col-md-10">
+                               <label class="control-label col-md-6">安装包文件名：</label>
+                               <div class="col-md-6">{{ form2.FileName_msb }}{{ msg2.FileName_msb.0 }}</div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        </div>
+        </div>
+
+        </br>
+        <div class="col-md-10 text-right">
+            <input type="submit" class="btn btn-info" value="保存" id="but">
+        </div>
+        <br>
+        </form>
+    </div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock %}

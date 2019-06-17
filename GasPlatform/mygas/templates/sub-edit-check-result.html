@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">数据录入</a></li>
+       <li class="active">膜式表</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+    <div class="mainbody col-1">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>操作结果</strong>&nbsp;<small>Operation Result >></small></h2>
+    </div>
+    <br>
+    <div>
+        {% if success_input == 1 %}
+            <h1>信息录入成功</h1>
+            <h4><a href="/data/">是否要去提交？</a></h4>
+            <h4><a href="/datainput/">是否要继续录入？</a></h4>
+        {% elif duplicate_input == 3 %}
+           <h1>录入的表号重复</h1>
+        {% endif %}
+
+        {% if success_edit == 1 %}
+           <h1>信息修改成功</h1>
+            <h4><a href="/data/">是否要去提交？</a></h4>
+        {% elif none_edit == 3 %}
+           <h1>未找到该表</h1>
+        {% endif %}
+
+        {% if test == 1 %}
+           <h1>该表即将开始测试或测试进行中，请稍后</h1>
+        {% endif %}
+
+        {% if nonepermit == 1 %}
+           <h1>无权限</h1>
+        {% endif %}
+
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock %}

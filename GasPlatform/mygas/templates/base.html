@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<title>上海智能燃气表测试</title>
+	<meta name="description" content="上海燃气表测试平台">
+	<meta name="author" content="">
+	<meta name="keyword" content="燃气表 测试 数据 平台">
+	<!-- end: Meta -->
+
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+
+    <link rel="shortcut" href="mygas/static/images/favicon.ico"/>
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="/static/fontawesome-free-5.6.3-web/css/all.css" rel="stylesheet"/>
+
+    <script src="/static/jquery-1.11.3/jquery-1.11.3.min.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+    <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <link href="/static/bootstrap-datetimpicker/bootstrap-datetimepicker.min.css"/>
+    <script src="/static/bootstrap-datetimpicker/moment.js"></script>
+    <script src="/static/bootstrap-datetimpicker/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/layer.js"></script>
+
+    <link href="/static/css/base_style.css" rel="stylesheet"/>
+    <link href="/static/css/common_style.css" rel="stylesheet"/>
+
+    <script src="/static/js/common_style.js"></script>
+
+{#    <link href="{%static "css/jquery.multiselect.css"%}" rel="stylesheet">#}
+{#    <link href="{% static "css/jquery-ui-1.12.1" %}">#}
+{#    <script type="text/javascript" src="{% static "js/jquery-1.11.2.min.js "%}" ></script>#}
+{#    <script type="text/javascript" src="{% static "js/bootstrap.min.js "%}"></script>#}
+{#    <script type="text/javascript" src="{% static "js/style1.js "%}"></script>#}
+{#    <script type="text/javascript" src="{% static "js/style2.js "%}"></script>#}
+{#    <script type="text/javascript" src="{% static "js/datepicker.min.js "%}"></script>#}
+{##}
+{#    <script src="{% static "js/jquery-1.11.3.min.js "%}"></script>#}
+
+{##}
+
+    {% block css %}
+
+    {% endblock %}
+</head>
+
+<body>
+      <div class="pg-header">
+          <div class="logo left">
+              上海燃气有限公司
+          </div>
+          <div class="right user" style="position: relative">
+              欢迎：{{ user }}
+              &nbsp;&nbsp;
+              <img src="/static/images/user.png" height="25px">
+              <ul class="userinfo nav nav-pills nav-stacked">
+                  <li><a href="/user/">个人资料</a></li>
+                  <li><a href="/logout/">退出登录</a></li>
+              </ul>
+          </div>
+{#          <div class="rmenus right">#}
+{#              <a href="#"><i class="far fa-comment-dots"></i>&nbsp;消息</a>#}
+{#              <a href="#"><i class="far fa-envelope"></i>&nbsp;邮箱</a>#}
+{#          </div>#}
+      </div>
+      <div class="pg-body">
+          <div class="menus">
+              <div class="side-header">
+                <img class="img-circle" src="/static/images/logo_a3.gif" height="67">
+                <span>欢迎使用</span>
+              </div>
+
+{#              使用template_tag#}
+              {% load rbac %}
+              {% menu request %}
+
+          </div>
+          {% block body %}
+
+          {% endblock %}
+      </div>
+
+      {% block js %}
+        <script>
+        function f() {
+            
+        }
+        
+        </script>
+      {% endblock %}
+
+</body>
+</html>

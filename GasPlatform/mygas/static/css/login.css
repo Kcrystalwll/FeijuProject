@@ -1,0 +1,73 @@
+.g-wide{
+	opacity:0.95;
+}
+.p-logo {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin-left: -452px;
+	color:#000;
+	font-weight:bold;
+}
+.p-login {
+    position: static;
+    padding-top: 160px;
+    padding-bottom: 40px;
+	height:500px;
+}
+.p-login-content {
+	position: relative;
+	width: 922px;
+	margin: 0 auto;
+	background-color: #0F3250;
+}
+.g-clear{}
+.g-clear:after {
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    content: '';
+}
+.p-login-left {
+    float: left;
+    width: 562px;
+    height:293px;
+}
+
+.p-login-right {
+    float: left;
+    width: 360px;
+
+}
+.b-signin {
+    height: 260px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.9);
+}
+.b-signin-nav {
+    background-color: #f6f6f6;
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    font-size: 24px;
+    color: #46c832;
+    font-family: "Microsoft YaHei";
+}
+.b-signin-contentwrap {
+    position: relative;
+    padding-bottom: 60px;
+}
+.b-signin-content {
+    padding-left: 36px;
+	padding-right:36px;
+}
+.p-foot {
+    color: #000;
+    padding-bottom: 70px;
+    text-align: center;
+	border-top:1px #fff solid;
+    font-size: 14px;
+    padding-top: 5px;
+}

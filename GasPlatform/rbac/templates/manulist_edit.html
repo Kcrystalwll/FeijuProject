@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">用户管理</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div class="mainbody col-1">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>编辑菜单</strong>&nbsp;<small>Menu Edit  >></small></h2>
+    </div>
+    <br>
+    <div class="row text-left vertical-middle-sm">
+        <form class="form-horizontal"  name="group_form" method="POST" action="/manulist_edit/?p1={{ id }}">
+        {% csrf_token %}
+             <div class="col-md-12">
+                  <div class="form-group {% if form.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-4">菜单名称：</label>
+                      <div class="col-md-4">{{ form.menu_name }}
+                          <span class="help-block">{{ form.errors.menu_name.0 }}</span>
+                      </div>
+                  </div>
+             </div>
+             <div class="col-md-12">
+                  <div class="form-group {% if form.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-4">图标：</label>
+                      <div class="col-md-4">{{ form.icon }}
+                          <span class="help-block">{{ form.errors.icon.0 }}</span>
+                      </div>
+                  </div>
+             </div>
+            <div class="col-md-12">
+                  <div class="form-group {% if form.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-4">权重：</label>
+                      <div class="col-md-4">{{ form.weight }}
+                          <span class="help-block">{{ form.errors.weight.0 }}</span>
+                      </div>
+                  </div>
+             </div>
+             </br>
+             <div class="col-md-8 text-right">
+                 <input type="submit" class="btn btn-info" value="提交">
+             </div>
+             <br>
+        </form>
+    </div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

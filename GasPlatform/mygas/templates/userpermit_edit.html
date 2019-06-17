@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="/users/">用户管理</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div class="mainbody col-1">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>编辑用户权限</strong>&nbsp;<small>Users Permission Edit >></small></h2>
+    </div>
+    <br>
+    <div class="raw">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body" >
+                    <h4><strong>用户名<span id="user">{{ UserToEdit.username }}</span>所拥有的权限</strong></h4>
+                </div>
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th><strong>权限名称</strong></th>
+                            <th><strong>操作</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user_perm in user_perms %}
+                            <tr>
+                                <td>{{user_perm}}</td>
+                                <td>
+                                    <a href="/perm_delete/?p1={{UserToEdit.username}}&p2={{ user_perm }}"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor%}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body" >
+                    <h4><strong>所有权限</strong></h4>
+                </div>
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th><strong>权限名称</strong></th>
+                            <th><strong>权限代码</strong></th>
+                            <th><strong>操作</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+{#                        {% for perm in perms %}#}
+{#                            <tr>#}
+{#                                <td>{{perm.name}}</td>#}
+{#                                <td>{{perm.codename}}</td>#}
+{#                                <td>#}
+{#                                    <input type="checkbox" value="{{perm.codename}}"  name="check_box_list" id="check_box_list">#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        {% endfor%}#}
+                        </tbody>
+                    </table>
+                    <br>
+                    <button type="button" class="btn btn-default" id="pe_sub">结果更新</button>
+                    <p></p>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+

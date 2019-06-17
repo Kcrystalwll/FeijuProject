@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <style type="text/css">
+    .mainbody{
+        width: auto;
+        background-color: #FFF;
+        margin-top: 0px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        overflow:hidden;
+    }
+    .col-1 {
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+    #add{
+        margin-bottom: 10px;
+    }
+    .tijiao{
+        border: 1px solid #dddddd;
+    }
+    .menu-body tr.active{
+        background-color: #f1f7fd;
+        border-left: 3px solid #fdc00f;
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+     <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">用户管理</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div class="mainbody col-1">
+    <div style="margin: 20px">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+              <!-- Default panel contents -->
+              <div class="panel-heading"><i class="fa fa-book"></i>&nbsp;分组信息
+{#                  <a href="/group_add/" class="btn btn-success btn-sm right" style="padding: 2px 8px;margin: -3px;">#}
+{#                      <i class="fa fa-plus"></i>新建 </a>#}
+              </div>
+
+
+
+              <!-- Table -->
+              <table class="table table-bordered table-hover">
+   <thead>
+        <tr>
+            <th class="text-center">名称</th>
+{#            <th class="text-center">操作</th>#}
+        </tr>
+  </thead>
+  <tbody class="menu-body">
+  {% for group in groups %}
+        <tr class="text-center {% if group.id|safe == gid %}active{% endif %}">
+            <td><a href="?gid={{ group.id }}" >{{ group.groupname }}</a></td>
+{#            <td>#}
+{#                <a class="glyphicon glyphicon-pencil" href="/group_edit/?p1={{ group.id }}"></a>#}
+{#                &nbsp;&nbsp;|&nbsp;&nbsp;#}
+{#                <a class="glyphicon glyphicon-trash" href="/group_del/?p1={{ group.id }}"></a>#}
+{#            </td>#}
+        </tr>
+  {% endfor %}
+  </tbody>
+</table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+              <!-- Default panel contents -->
+              <div class="panel-heading"><i class="fa fa-cubes"></i>&nbsp;用户信息
+                  <a href="/loginuser_add/" class="btn btn-success btn-sm right" style="padding: 2px 8px;margin: -3px;">
+                  <i class="fa fa-plus"></i>新建 </a>
+              </div>
+
+              <!-- Table -->
+              <table class="table table-bordered table-hover">
+                  <thead>
+                        <tr>
+                            <th class="text-center">用户名</th>
+                            <th class="text-center">操作</th>
+                        </tr>
+                  </thead>
+                  <tbody class="permission-area">
+                  {% for user in users %}
+                        <tr class="text-center">
+                            <td>{{ user.username }}</td>
+                            <td>
+                                <a href="javascript:" onclick="reset_pwd(this,{{ user.id }},)">密码重置</a>
+                                &nbsp;&nbsp;|&nbsp;&nbsp;
+                                <a class="glyphicon glyphicon-pencil" href="/loginuser_edit/?p1={{ user.id }}"></a>
+                                &nbsp;&nbsp;|&nbsp;&nbsp;
+                                <a class="glyphicon glyphicon-trash" href="/loginuser_del/?p1={{ user.id }}"></a>
+                            </td>
+                        </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+ $.ajaxSetup({
+            data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+        });
+function reset_pwd(the,id) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"重置密码提示框",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认重置该用户密码</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/pwd_reset/',
+                type: "POST",
+                data: {
+                    "id":id,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("重置成功");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }else{
+                        layer.msg("重置失败");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+</script>
+{% endblock %}

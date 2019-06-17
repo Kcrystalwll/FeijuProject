@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+    .mainbody{
+        width: auto;
+        background-color: #FFF;
+        margin-top: 0px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        overflow:hidden;
+    }
+    .col-1 {
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+    #add{
+        margin-bottom: 10px;
+    }
+    .tijiao{
+        border: 1px solid #dddddd;
+    }
+    #allocation label{
+        font-size: 16px;
+    }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">测试分配</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div style="margin-left: 20px;margin-right: 20px">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>分配结果</strong>&nbsp;<small>Meter Allocation Result >></small></h2>
+    </div>
+    <br>
+
+<div class="text-left">
+    <form class="form-horizontal" style="font-size: 16px" action="/allo_result/" method="POST" id="allo_result">
+         {% csrf_token %}
+          <div class="cul-md-12">
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">表号：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterId }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">表类型：</label>
+                  <div class="col-md-8">
+                  {{ q_form.MeterType }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">生产厂商：</label>
+                  <div class="col-md-8">
+                  {{ q_form.ManufactureName_id }}
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="col-md-12">
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">提交日期：</label>
+                  <div id="datetimepicker_q52" class="col-md-8 input-group">
+                      <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                      {{ q_form.Subtime }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-4">审核日期：</label>
+                  <div id="datetimepicker_q53" class="col-md-8 input-group">
+                      <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                      {{ q_form.CheckTime }}
+                  </div>
+              </div>
+          </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="submit" style="margin-left: 120px" class="btn btn-default" value="查询"/>
+          </div>
+    </form>
+</div>
+
+{% if meter_list %}
+<table class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">生产厂商</th>
+            <th class="text-center">IC卡检测</th>
+            <th class="text-center">命令检测</th>
+            <th class="text-center">初检</th>
+            <th class="text-center">终检</th>
+            <th class="text-center">是否免检</th>
+            <th class="text-center">是否优先</th>
+            <th class="text-center">分配人员</th>
+            <th class="text-center">状态</th>
+        </tr>
+  </thead>
+  <tbody>
+  {% for meter in meter_list %}
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td>{{ meter.ManufactureName.ManufactureName }}</td>
+            <td>{{ meter.ICTest }}</td>
+            <td>{{ meter.CommandTest }}</td>
+            <td>{{ meter.ChuTest }}</td>
+            <td>{{ meter.ZhoTest }}</td>
+            <td>{{ meter.MianTest }}</td>
+            <td>{{ meter.MeterPrivilege }}</td>
+            <td>{{ meter.allo_user }}</td>
+            <td>
+                {% if meter.IsAllocated == 1 and meter.IsTest == 1%}
+                本次测试完成！
+                {% elif meter.IsAllocated == 1 and meter.IsTest == 0%}
+                测试中
+                {% endif %}
+            </td>
+        </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% elif meter%}
+<table class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">生产厂商</th>
+            <th class="text-center">IC卡检测</th>
+            <th class="text-center">命令检测</th>
+            <th class="text-center">初检</th>
+            <th class="text-center">终检</th>
+            <th class="text-center">是否免检</th>
+            <th class="text-center">是否优先</th>
+            <th class="text-center">分配人员</th>
+            <th class="text-center">状态</th>
+        </tr>
+  </thead>
+  <tbody>
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td>{{ meter.ManufactureName.ManufactureName }}</td>
+            <td>{{ meter.ICTest }}</td>
+            <td>{{ meter.CommandTest }}</td>
+            <td>{{ meter.ChuTest }}</td>
+            <td>{{ meter.ZhoTest }}</td>
+            <td>{{ meter.MianTest }}</td>
+            <td>{{ meter.MeterPrivilege }}</td>
+            <td>{{ meter.allo_user }}</td>
+            <td>
+                {% if meter.IsAllocated == 1 and meter.IsTest == 1%}
+                本次测试完成！
+                {% elif meter.IsAllocated == 1 and meter.IsTest == 0%}
+                测试中
+                {% endif %}
+            </td>
+        </tr>
+  </tbody>
+</table>
+{% else %}
+     <div style="margin-top: 40px;margin-left: 50px"><h3>未查询到相关数据！</h3></div>
+{% endif %}
+
+<div class="col-md-12 text-right">
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+      {{ page_info.pager|safe }}
+  </ul>
+</nav>
+</div>
+
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+     $('#datetimepicker_q52').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+      })
+	   });
+    $(document).ready(function(){
+     $('#datetimepicker_q53').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+      })
+	   });
+ $.ajaxSetup({
+            data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+        });
+function del_allo(the,MeterId) {
+    var meterid = $(the).parents("tr").children("td").eq(0).text();
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"删除分配信息",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认删除'+meterid+'表分配信息，删除后请重新分配</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/del_allo/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                },
+                success: function (e) {
+                    console.log(e);
+                    if (e == "1") {
+                        layer.msg("删除成功");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }else if(e == "3"){
+                        layer.msg("该智能表已加入测试队列中，请先去中止测试再修改分配");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                    else if(e == "4"){
+                        layer.msg("请先去查看测试结果，并相应操作后再来修改分配");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                    else{
+                        layer.msg("删除失败");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+</script>
+{% endblock %}

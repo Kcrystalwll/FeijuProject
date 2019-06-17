@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+    #add{
+        margin-bottom: 10px;
+    }
+    .tijiao{
+        border: 1px solid #dddddd;
+    }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+    <ol class="breadcrumb" style="margin-bottom: 0px">
+       <li><a href="#"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+       <li><a href="#">数据录入</a></li>
+       <li class="active">Data</li>
+
+    <div class="timePlace right">
+        <span  id="timePlace"></span>
+    </div>
+
+    </ol>
+
+<div style="margin-left: 20px;margin-right: 20px">
+    <div class="page-header" style="margin:3px 0px 3px 0px">
+        <h2 style="margin-left: 8px"><strong>编辑数据</strong>&nbsp;<small>Meter Info Input Or Edit >></small></h2>
+    </div>
+    <br>
+
+<div class="text-left">
+    <form class="form-horizontal" style="font-size: 16px" action="/data/" method="POST" id="data">
+         {% csrf_token %}
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-3">表号：</label>
+                  <div class="col-md-8">
+                      {{ q_form.MeterId }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-3">表类型：</label>
+                  <div class="col-md-8">
+                      {{ q_form.MeterType }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                  <label class="control-label col-md-3">编辑日期：</label>
+                  <div id="datetimepicker_q1" class="col-md-6 input-group">
+                      <div class="input-group-addon date"><span class="add-on glyphicon glyphicon-calendar"></span></div>
+                      {{ q_form.Subtime }}
+                  </div>
+              </div>
+          </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="submit" id="query" class="btn btn-default" value="查询"/>
+    </form>
+</div>
+
+<div class="text-right">
+    <a id="add" href="/datainput/" class="right btn btn-danger">添加</a>
+     <a href="/admin/export_excel/"><button  type="button" class="btnStyle" >导出excel</button></a>
+</div>
+
+
+{% if meter_list %}
+<table class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">上次编辑时间</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+            <th class="text-center">是否提交</th>
+        </tr>
+  </thead>
+  <tbody>
+  {% for meter in meter_list %}
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td> {{ meter.Subtime }}</td>
+            <td>未提交</td>
+            <td><a class="glyphicon glyphicon-pencil" href="/edit_data/?MeterId={{ meter.id }}&MeterType={{ meter.MeterType }}"></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a name='delete' class="glyphicon glyphicon-trash" href="javascript:" onclick="del(this,'{{ meter.MeterId }}','{{ meter.MeterType }}')"></a>
+            </td>
+            <td><a name='tijiao' class="tijiao btn btn-default" href="javascript:" onclick="tijiao(this,'{{ meter.MeterId }}')">提交</a></td>
+        </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% elif meter %}
+<table class="table table-bordered table-hover">
+   <thead>
+        <tr style="font-size: 16px">
+            <th class="text-center">序号</th>
+            <th class="text-center">燃气表表号</th>
+            <th class="text-center">燃气表类型</th>
+            <th class="text-center">上次编辑时间</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+            <th class="text-center">是否提交</th>
+        </tr>
+  </thead>
+  <tbody>
+        <tr class="text-center" style="font-size: 15px">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ meter.MeterId }}</td>
+            <td>{{ meter.MeterType }}</td>
+            <td> {{ meter.Subtime }}</td>
+            <td>未提交</td>
+            <td><a class="glyphicon glyphicon-pencil" href="/edit_data/?MeterId={{ meter.id }}&MeterType={{ meter.MeterType }}"></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a name='delete' class="glyphicon glyphicon-trash" href="javascript:" onclick="del(this,'{{ meter.MeterId }}','{{ meter.MeterType }}')"></a>
+            </td>
+            <td><a name='tijiao' class="tijiao btn btn-default" href="javascript:" onclick="tijiao(this,'{{ meter.MeterId }}')">提交</a></td>
+        </tr>
+  </tbody>
+</table>
+{% else %}
+    <div style="margin-top: 40px;margin-left: 50px"><h3>未查询到相关数据！</h3></div>
+{% endif %}
+
+<div class="col-md-12 text-right">
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+      {{ page_info.pager|safe }}
+  </ul>
+</nav>
+</div>
+
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+     $('#datetimepicker_q1').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+      })
+	   });
+ $.ajaxSetup({
+            data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+        });
+function del(the,MeterId,MeterType) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"删除表信息",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认删除'+MeterId+'表信息</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/del_data/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                    "MeterType":MeterType,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("删除成功");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }else{
+                        layer.msg("删除失败");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+function tijiao(the,MeterId,) {
+    layer.open({
+        type: 1,
+        skin: "layerui-layer-rim",
+        area:["360px","180px"],
+        title:"提交表信息",
+        content: '<div style="margin-left:20px;margin-top:20px;"><h4>是否确认提交'+MeterId+'表信息</h4></div>',
+        btn: ['确定', '取消'],
+        yes: function () {
+            $.ajax({
+                url: '/submit/',
+                type: "POST",
+                data: {
+                    "MeterId":MeterId,
+                },
+                success: function (e) {
+                    if (e == "1") {
+                        layer.msg("提交成功");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }else{
+                        layer.msg("提交失败");
+                        parent.layer.close(e);
+                        setTimeout("window.location.reload()","1000");
+                    }
+                },
+            });
+        },
+    });
+}
+</script>
+{% endblock %}
